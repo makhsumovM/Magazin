@@ -62,7 +62,6 @@ async function handleLoginClick(e){
         saveToken(data.data)
         getToken(data.data)
         navigate("/")
-        
 
       }
   } catch (error) {
