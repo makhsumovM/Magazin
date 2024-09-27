@@ -2,7 +2,7 @@ import React from 'react'
 
 const Dashbroad = () => {
   return (
-    <div>Dashbroad</div>
+    <div className=''>Dashbroad</div>
   )
 }
 
