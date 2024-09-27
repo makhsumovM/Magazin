@@ -6,6 +6,7 @@ import Dashbroad from './pages/dashbroad'
 import Orders from './pages/orders'
 import Products from './pages/products'
 import Other from './pages/other'
+import Dashboard from './pages/dashbroad'
 
 const App = () => {
    const router = createBrowserRouter([
@@ -19,7 +20,7 @@ const App = () => {
       children:[
         {
           index:true,
-          element:<Dashbroad/>,
+          element:<Dashboard/>,
         },
         {
           path:'orders',
