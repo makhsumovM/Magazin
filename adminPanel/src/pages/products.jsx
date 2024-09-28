@@ -2,8 +2,10 @@ import React, { useEffect, useId } from 'react'
 import { GetToken } from '../utils/token'
 import { useDispatch, useSelector } from 'react-redux'
 import {  GetMyProducts } from '../api/apiAsyncThunk'
-import { Button, InputAdornment, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material'
-import { CheckBox, Delete, Edit, Search } from '@mui/icons-material'
+import { Box, Button, Checkbox, IconButton, InputAdornment, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { CheckBox, Delete, Edit, EditNotifications, Search } from '@mui/icons-material'
 
 const Products = () => {
 
@@ -42,9 +44,8 @@ const Products = () => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell><CheckBox/>Products</TableCell>
+                    <TableCell><Checkbox/>Products</TableCell>
                     <TableCell>Invertory</TableCell>
-                    <TableCell>Category</TableCell>
                     <TableCell>Price</TableCell>
                     <TableCell>Actions</TableCell>
                   </TableRow>
@@ -54,7 +55,22 @@ const Products = () => {
 
                     return(
                     <TableRow key={el.id}>
-                      <TableCell><div className='flex items-center gap-[20px]'><CheckBox/> <div><img   className='max-w-[100px]' src={import.meta.env.VITE_APP_IMAGE_URL+el.image} alt="" /></div>{el.productName}</div></TableCell>
+                      <TableCell>
+                      <div className='flex items-center gap-[px] '><Checkbox/> 
+                        <div className='flex items-center gap-[10px]'>
+                          <img className='max-w-[59px] max-h-[48px] object-cover ' src={import.meta.env.VITE_APP_IMAGE_URL+el.image} alt="" />
+                          <Typography variant='h6' component="p">{el.productName}</Typography>
+                        </div>
+                      </div>
+                      </TableCell>
+                      <TableCell><Typography variant='h6' component="p">{el.quantity}</Typography></TableCell>
+                      <TableCell><Typography variant='h6' component="p">{el.price}$</Typography></TableCell>
+                      <TableCell>
+                        <Box>
+                          <IconButton><EditIcon color='secondary'/></IconButton>
+                          <IconButton><DeleteIcon color='error'/></IconButton>
+                          </Box>
+                          </TableCell>
                     </TableRow>
                     )
                   })}
