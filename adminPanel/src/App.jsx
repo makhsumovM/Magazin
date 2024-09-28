@@ -7,6 +7,7 @@ import Orders from './pages/orders'
 import Products from './pages/products'
 import Other from './pages/other'
 import Dashboard from './pages/dashbroad'
+import ForAddinProduct from './pages/forAddinProduct'
 
 const App = () => {
    const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const App = () => {
         {
           path:'other',
           element:<Other/>
+        },
+        {
+          path:'newProduct',
+          element:<ForAddinProduct/>
         },
         {
           path:'*',

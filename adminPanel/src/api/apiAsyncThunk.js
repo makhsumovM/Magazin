@@ -22,3 +22,12 @@ export const GetMyProducts = createAsyncThunk('admin/GetMyProducts',async(id)=>{
     }
 })
 
+export const GetColors = createAsyncThunk('admin/GetColors',async()=>{
+    try {
+        const {data} = await axiosRequest.get("/Color/get-colors")
+        return data.data
+    } catch (error) {
+        console.error(error);
+    }
+})
+

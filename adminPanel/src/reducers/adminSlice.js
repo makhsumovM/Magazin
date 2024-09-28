@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit"
-import {  GetMyProducts, GetProducts } from "../api/apiAsyncThunk"
+import {  GetColors, GetMyProducts, GetProducts } from "../api/apiAsyncThunk"
  
 
 const initialState = {
     products:[],
     myProducts:null,
+    colors:[],
     
 }
 
@@ -22,6 +23,9 @@ export const adminReducer  = createSlice({
         .addCase(GetMyProducts.fulfilled,(state,action)=>{
             console.log(action.payload,"myProducts")
             state.myProducts = action.payload
+        })
+        .addCase(GetColors.fulfilled,(state,actions)=>{
+            state.colors = actions.payload
         })
 
         

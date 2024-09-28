@@ -6,6 +6,7 @@ import { Box, Button, Checkbox, IconButton, InputAdornment, MenuItem, Paper, Sel
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CheckBox, Delete, Edit, EditNotifications, Search } from '@mui/icons-material'
+import { Link } from 'react-router-dom'
 
 const Products = () => {
 
@@ -21,7 +22,7 @@ const Products = () => {
   console.log(myProducts,"My Products")
   return (
     <div className='p-[20px]'>
-       <h1 className='flex justify-between items-center text-[32px]'>Orders <span><Button variant='contained'>+Add order</Button></span></h1>
+       <h1 className='flex justify-between items-center text-[32px]'>Orders <Link to={'/layout/newProduct'}><span><Button variant='contained'>+Add order</Button></span></Link></h1>
       <div className='py-[20px] flex justify-between items-center'>
         <div className='flex items-center gap-[20px]'>
           <div>
