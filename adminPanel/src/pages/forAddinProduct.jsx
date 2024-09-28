@@ -12,36 +12,34 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import FileBase64 from 'react-file-base64';
 import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { Avatar } from "antd";
-import { Delete } from "@mui/icons-material";
+import { Construction, Delete } from "@mui/icons-material";
 import { CirclePicker } from "react-color";
 import BackupIcon from "@mui/icons-material/Backup";
 import { useDispatch, useSelector } from "react-redux";
-import { GetColors } from "../api/apiAsyncThunk";
+import { ForPostProduct, GetBrands, GetCategories, GetColors, GetSubCategories } from "../api/apiAsyncThunk";
+import { forDeleteImages, setBrandID, setCategoryID, setCode, setColorID, setDescription, setDiscount, setImages, setPrice, setProductName, setQuantity, setSubCategoriesID } from "../reducers/adminSlice";
 
 const ForAddinProduct = () => {
   const [selectedColor, setSelectedColor] = useState("");
-  const { colors } = useSelector((state) => state.admin);
+  const { colors,categories,brands, productName,code, descripdion,price,discount,quantity,selectedCategoryID,selectedBrandID,selectedColorID,subCategories,selectedSubcategoryID,images} = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(GetColors());
-  }, [dispatch]);
+    dispatch(GetCategories())
+    dispatch(GetBrands())
+    dispatch(GetSubCategories())
+  }, [dispatch,images,productName,code,]);
 
-  const handleColorChange = (colorId) => {
-    setSelectedColor(colorId);
-    console.log("Selected color:", colorId);
-  };
+  console.log(selectedColorID)
 
-  // Массив с названиями цветов в нижнем регистре
-  const colorOptions = colors.map((color) => color.colorName.toLowerCase());
-  console.log(colorOptions);
 
-  /// Для FileBase64
-  const [images, setImages] = useState([]);
+  
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
     const newImages = [];
@@ -59,9 +57,17 @@ const ForAddinProduct = () => {
     });
   };
 
-  const handleDeleteImage = (indexToDelete) => {
-    setImages(images.filter((_, index) => index !== indexToDelete)); // Удаляем изображение по индексу
-  };
+
+  
+
+  const handleShowImage = (e)=>{
+    dispatch(setImages(e))
+  }
+
+  const handleSubmit  = ()=>{
+    dispatch(ForPostProduct({selectedBrandID,price,productName,code,discount,quantity,selectedColorID,selectedSubcategoryID,images}))
+  }
+
 
   return (
     <div className="p-[20px] ">
@@ -72,17 +78,17 @@ const ForAddinProduct = () => {
             <Button variant="outlined">Cancel</Button>
           </Link>
           <span>
-            <Button variant="contained">Save</Button>
+            <Button variant="contained" onClick={handleSubmit}>Save</Button>
           </span>
         </span>
       </h1>
 
-      <form action="" className="flex w-[100%] justify-between py-[20px]">
+      <form action="" className="flex w-[100%] justify-between py-[20px]" >
         <div className="w-[70%] ">
           {/* Поля для ввода информации о продукте */}
           <div className="flex gap-[20px] py-[20px] w-[100%] ">
-            <TextField label="Product Name" size="" sx={{ width: "70%" }} />
-            <TextField label="Code" size="" sx={{ width: "100px" }} />
+            <TextField label="Product Name" size="" sx={{ width: "70%" }} value={productName}  onChange={(e)=>dispatch(setProductName(e.target.value))}/>
+            <TextField label="Code" size="" sx={{ width: "100px" }} value={code} onChange={(e)=>dispatch(setCode(e.target.value))} />
           </div>
 
           {/* Описание продукта */}
@@ -91,24 +97,24 @@ const ForAddinProduct = () => {
               theme="snow"
               placeholder="description "
               style={{ padding: "20px,0px", height: "150px", width: "80%" }}
+              value={descripdion}
+              onChange={(e)=>dispatch(setDescription(e))}
             />
           </div>
 
           {/* Выбор категории и бренда */}
           <div className="flex items-center gap-[20px]">
-            <Select>
-              <MenuItem>Select Category</MenuItem>
-              <MenuItem>Техника для красоты</MenuItem>
-              <MenuItem>Интернет пакеты и красивые номера</MenuItem>
-              <MenuItem>Транспорт</MenuItem>
-              <MenuItem>Смартфоны и планшеты</MenuItem>
-            </Select>
-            <Select>
-              <MenuItem>Select Brands</MenuItem>
-              <MenuItem value="">Tecno</MenuItem>
-              <MenuItem value="">SAMSUNG1</MenuItem>
-              <MenuItem value="">Xiaomi</MenuItem>
-              <MenuItem value="">Apple</MenuItem>
+            
+
+              <Select value={selectedSubcategoryID} onChange={(e)=>dispatch(setSubCategoriesID(e.target.value))}>
+              {subCategories.slice(0,4).map((el)=>{
+                  return <MenuItem value={el.id}>{el.subCategoryName}</MenuItem>
+                })}
+              </Select>  
+            <Select value={selectedBrandID} onChange={(e)=>dispatch(setBrandID(e.target.value))}>
+              {brands.slice(0,4).map((el)=>{
+                  return <MenuItem value={el.id}>{el.brandName}</MenuItem>
+                })}
             </Select>
           </div>
 
@@ -119,20 +125,26 @@ const ForAddinProduct = () => {
               type="number"
               size=""
               sx={{ width: "20%" }}
+              value={price}
+              onChange={(e)=>dispatch(setPrice(e.target.value))}
             />
-            <TextField label="Discount" type="number" sx={{ width: "20%" }} />
-            <TextField
-              label="Quantity"
-              type="number"
+            <TextField  type="number" sx={{ width: "20%" }} value={quantity} onChange={(e)=>dispatch(setQuantity(e.target.value))} />
+            <Select
+              label="HasDiscount"
               size=""
               sx={{ width: "20%" }}
-            />
+              value={discount}
+              onChange={(e)=>dispatch(setDiscount(e.target.value))}
+            >
+              <MenuItem value={true}>Имеется</MenuItem>
+              <MenuItem value={false}>Не Имеется</MenuItem>
+            </Select>
           </div>
         </div>
 
-        {/* Правая колонка с выбором цвета и загрузкой изображений */}
+      
         <div className="w-[30%] flex justify-center flex-col gap-[20px]">
-          {/* Выбор цвета */}
+          
           <div>
             <div className="p-[20px] border-[3px]">
               <h1 className="font-bold text-[24px] pb-[20px]">Colour:</h1>
@@ -144,13 +156,13 @@ const ForAddinProduct = () => {
                       name="color"
                       value={el.id}
                       className="hidden"
-                      checked={selectedColor === el.id}
-                      onChange={() => handleColorChange(el.id)}
+                      checked={selectedColorID === el.id}
+                      onChange={()=>dispatch(setColorID(el.id))}
                     />
                     <span
                       className={`w-8 h-8 rounded-full border-2 border-gray-400 cursor-pointer flex items-center justify-center ${
-                        selectedColor === el.id ? "ring-2 ring-blue-500" : ""
-                      }`} // Добавляем стиль для выделения
+                        selectedColorID === el.id ? "ring-2 ring-blue-500" : ""
+                      }`} 
                       style={{ backgroundColor: `${el.colorName.toLowerCase()}` }}
                     ></span>
                   </label>
@@ -179,12 +191,7 @@ const ForAddinProduct = () => {
                   (SVG, JPG, PNG, or gif maximum 900x400)
                 </p>
               </div>
-              <input
-                id="file-upload"
-                type="file"
-                onChange={handleFileUpload}
-                style={{ display: "none" }}
-              />
+                <FileBase64 multiple={true} onDone={handleShowImage}/>
 
               {/* Список загруженных изображений */}
               <div className="py-[20px]">
@@ -205,7 +212,7 @@ const ForAddinProduct = () => {
                           </TableCell>
                           <TableCell>{image.name}</TableCell>
                           <TableCell>
-                            <IconButton onClick={() => handleDeleteImage(index)}>
+                            <IconButton onClick={()=>dispatch(forDeleteImages(index))} >
                               <Delete />
                             </IconButton>
                           </TableCell>
@@ -223,6 +230,7 @@ const ForAddinProduct = () => {
               </div>
             </div>
           </div>
+        <button type="submit">add</button>
         </div>
       </form>
     </div>

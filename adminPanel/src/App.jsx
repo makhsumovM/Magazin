@@ -8,6 +8,8 @@ import Products from './pages/products'
 import Other from './pages/other'
 import Dashboard from './pages/dashbroad'
 import ForAddinProduct from './pages/forAddinProduct'
+import ForEdditProductById from './pages/forEditProductByID'
+
 
 const App = () => {
    const router = createBrowserRouter([
@@ -43,6 +45,10 @@ const App = () => {
           path:'*',
           element:<div>404 Not Found</div>
         },
+        {
+          path:':id',
+          element:<ForEdditProductById/>
+        }
       ]
     }
 
