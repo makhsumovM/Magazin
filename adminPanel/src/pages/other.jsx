@@ -1,8 +1,17 @@
+import { Button } from '@mui/material'
 import React from 'react'
 
 const Other = () => {
   return (
-    <div>Other</div>
+    <div className='p-[20px]'>
+      <h1>
+        <span>
+          <Button>Categories</Button>
+          <Button>Brands</Button>
+        </span>
+        <span><Button>ADD NEW</Button></span>
+      </h1>
+    </div>
   )
 }
 

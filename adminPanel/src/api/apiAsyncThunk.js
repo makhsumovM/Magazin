@@ -110,3 +110,11 @@ export const ForEditProduct = createAsyncThunk('admin/ForEditProduct',async(para
         console.log(error);
     }
 })
+
+export const ForDeleteProductByID = createAsyncThunk('admin/ForDeleteProductByID',async(id,{dispatch})=>{
+    try {
+        const {data} = await axiosRequest.delete(`/Product/delete-product?id=${id}`)
+    } catch (error) {
+        console.error(error);
+    }
+})

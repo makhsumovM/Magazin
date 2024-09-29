@@ -1,7 +1,7 @@
 import React, { useEffect, useId } from 'react'
 import { GetToken } from '../utils/token'
 import { useDispatch, useSelector } from 'react-redux'
-import {  GetMyProducts } from '../api/apiAsyncThunk'
+import {  ForDeleteProductByID, GetMyProducts } from '../api/apiAsyncThunk'
 import { Box, Button, Checkbox, IconButton, InputAdornment, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -16,6 +16,7 @@ const Products = () => {
   useEffect(()=>{
     if(token){
       dispatch(GetMyProducts(token.sid))
+      
     }
   },[dispatch])
   console.log(token.sid,"ID")
@@ -73,7 +74,7 @@ const Products = () => {
                       <TableCell>
                         <Box>
                           <IconButton onClick={()=>handleEditClick(el.id)}><EditIcon color='secondary'/></IconButton>
-                          <IconButton><DeleteIcon color='error'/></IconButton>
+                          <IconButton onClick={()=>dispatch(ForDeleteProductByID(el.id))}><DeleteIcon color='error'/></IconButton>
                           </Box>
                           </TableCell>
                     </TableRow>
