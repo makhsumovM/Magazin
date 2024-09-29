@@ -118,3 +118,78 @@ export const ForDeleteProductByID = createAsyncThunk('admin/ForDeleteProductByID
         console.error(error);
     }
 })
+
+export const ForAddNewCategories = createAsyncThunk('admin/ForAddNewCategories',async(params,{dispatch})=>{
+    const form = new FormData()
+    form.append('CategoryName',params.categoiresName)
+    form.append('CategoryImage',params.categoriesImage.file)
+    try {
+        const {data} = await axiosRequest.post(`/Category/add-category`,form)
+        dispatch(GetCategories())
+        return data
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+export const ForGetCategories = createAsyncThunk('admin/ForGetCategories',async(id)=>{
+    try {
+        const {data} = await axiosRequest.get(`/Category/get-category-by-id?id=${id}`)
+        console.log(data)
+        return data.data
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+export const ForUpdateCategory = createAsyncThunk('admin/ForUpdateCategory',async(params)=>{
+    console.log(params)
+    const form = new FormData()
+    form.append('Id',params.IdCategory)
+    form.append('CategoryName',params.EditCategoryName)
+    form.append('CategoryImage',params.categoriesImage.file)
+    try {
+        const {data} = await axiosRequest.put('/Category/update-category',form)
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+
+export const ForAddNewBrands = createAsyncThunk('admin/ForAddNewBrands',async(name,{dispatch})=>{
+    try {
+        const {data} = await axiosRequest.post(`/Brand/add-brand?BrandName=${name}`)
+        dispatch(GetBrands())
+        return data
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+export const ForDeleteBrandsByID = createAsyncThunk('admin/ForDeleteBrandsByID',async(id,{dispatch})=>{
+    try {
+        const {data} = await axiosRequest.delete(`/Brand/delete-brand?id=${id}`)
+        dispatch(GetBrands())
+        return data
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+export const ForUpdateBrand = createAsyncThunk('admin/ForUpdateBrand',async(params)=>{
+    try {
+        const {data} = axiosRequest.put(`/Brand/update-brand?Id=${params.IdBrand}&BrandName=${params.ForEditBrandName}`)
+    } catch (error) {
+        console.error(error);
+    }
+})
+
+export const GetBrandsById = createAsyncThunk('admin/GetBrandsById',async(id)=>{
+    try {
+        const {data} = await axiosRequest.get(`Brand/get-brand-by-id?id=${id}`)
+        console.log(data)
+        return data.data
+    } catch (error) {
+        console.error(error);
+    }
+})

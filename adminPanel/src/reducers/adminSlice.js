@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import {  ForEditProduct, GetBrands, GetCategories, GetColors, GetMyProducts, GetProductByid, GetProducts, GetSubCategories } from "../api/apiAsyncThunk"
+import {  ForEditProduct, ForGetCategories, ForUpdateBrand, GetBrands, GetBrandsById, GetCategories, GetColors, GetMyProducts, GetProductByid, GetProducts, GetSubCategories } from "../api/apiAsyncThunk"
  
 
 const initialState = {
@@ -27,7 +27,15 @@ const initialState = {
     EditHasDiscount:"",
     EditQuantity:"",
     EditCode:"",
-    fornavigate :{}
+    fornavigate :{},
+    categoriesImage :[],
+    categoiresName:"",
+    categoryById:{},
+    EditCategoryName:"",
+    IdCategory:"",
+    ForBrandName:"",
+    ForEditBrandName:"",
+    IdBrand:"",
 
 
 }
@@ -97,7 +105,29 @@ export const adminReducer  = createSlice({
             },
             setEditCode:(state,action)=>{
                 state.EditCode = action.payload
-            }
+            },
+            setImageCategories:(state,action)=>{
+                console.log(action.payload,"imageCategory")
+                state.categoriesImage = action.payload
+            },
+            
+                setCategoryName:(state,action)=>{
+                    state.categoiresName = action.payload
+                },
+                setEditCategoryName:(state,action)=>{
+                    state.EditCategoryName = action.payload
+                },
+                forGetIdCategory:(state,action)=>{
+                    state.IdCategory = action.payload
+                },
+                
+                setForBrandName:(state,action)=>{
+                    state.ForBrandName = action.payload
+                }
+                
+
+            
+            
 
 
      
@@ -138,15 +168,28 @@ export const adminReducer  = createSlice({
             state.EditCode = actions.payload.code
         })
         .addCase(ForEditProduct.fulfilled,(state,actions)=>{
-            console.log(actions.payload,"iiiiyouv")
+            
             state.fornavigate = actions.payload
         })
+        .addCase(ForGetCategories.fulfilled,(state,actions)=>{
+            console.log(actions.payload.id,"ooooooo")
+            state.EditCategoryName = actions.payload.categoryName
+            state.IdCategory = actions.payload.id
+        })
+        .addCase(GetBrandsById.fulfilled,(state,actions)=>{
+            console.log(actions.payload)
+        })
+        .addCase(ForUpdateBrand.fulfilled,(state,actions)=>{
+            console.log(actions.payload)
+            state.ForEditBrandName = actions.payload.brandName
+            state.IdBrand = actions.payload.id
+
+        })
+        
 
         
     }
-    
-
 })
 
-export const {setProductName,  setCode, setDescription,setPrice, setDiscount,setQuantity,setCategoryID,setBrandID,setColorID,setSubCategoriesID,setImages,forDeleteImages,setEditProductName,  setEditDescription ,setEditPrice,setEditHasDiscount ,setEditQuantity,setEditCode} = adminReducer.actions
+export const {setProductName,  setCode, setDescription,setPrice, setDiscount,setQuantity,setCategoryID,setBrandID,setColorID,setSubCategoriesID,setImages,forDeleteImages,setEditProductName,  setEditDescription ,setEditPrice,setEditHasDiscount ,setEditQuantity,setEditCode,setImageCategories,setCategoryName,setEditCategoryName,forGetIdCategory,setForBrandName} = adminReducer.actions
 export default adminReducer .reducer

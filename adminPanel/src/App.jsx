@@ -9,6 +9,8 @@ import Other from './pages/other'
 import Dashboard from './pages/dashbroad'
 import ForAddinProduct from './pages/forAddinProduct'
 import ForEdditProductById from './pages/forEditProductByID'
+import OtherCategories from './pages/otherCategories'
+import OtherBrands from './pages/otherBrands'
 
 
 const App = () => {
@@ -35,7 +37,17 @@ const App = () => {
         },
         {
           path:'other',
-          element:<Other/>
+          element:<Other/>,
+          children:[
+            {
+              index:true,
+              element:<OtherCategories/>
+            },
+            {
+              path:'brands',
+              element:<OtherBrands/>
+            },
+          ]
         },
         {
           path:'newProduct',
